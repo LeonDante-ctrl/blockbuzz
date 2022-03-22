@@ -3,5 +3,8 @@ from django.contrib import admin
 from .models import Category,News
 
 admin.site.register(Category)
-admin.site.register(News)
+
+class AdminNews(admin.ModelAdmin):
+    list_display=('title','category', 'add_time')
+admin.site.register(News,AdminNews)
 # Register your models here.
