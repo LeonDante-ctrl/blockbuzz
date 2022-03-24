@@ -27,3 +27,19 @@ def detail(request,id):
         'news':news,
         'similar_news':sim_news
     })
+    
+    
+#cfetching all category
+def all_category(request):
+    cats=Category.objects.all()
+    return render(request,'category.html',{
+        'cats':cats
+    })   
+    
+def category(request,id):
+    category=Category.objects.get(id=id)
+    news=News.objects.filter(category=category)
+    return render(request,'category-news.html',{
+        'all_news':news,
+        'category':category
+    })
