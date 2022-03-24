@@ -21,6 +21,9 @@ def all_news(request):
 
 def detail(request,id):
     news=News.objects.get(pk=id)
+    category=Category.objects.get(id=news.category.id)
+    sim_news=News.objects.filter(category=category).exclude(id=id)
     return render(request,'detail.html',{
-        'news':news
+        'news':news,
+        'similar_news':sim_news
     })
