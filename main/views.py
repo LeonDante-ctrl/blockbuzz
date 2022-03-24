@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Category, News
+from django.contrib import messages
+from .models import Category, News, Comment
 
 def home(request):
     first_news=News.objects.first()
@@ -21,11 +22,24 @@ def all_news(request):
 
 def detail(request,id):
     news=News.objects.get(pk=id)
+    if request.method=='POST':
+        name=request.POST['name']
+        email=request.POST['email']
+        comment=request.POST['message']
+        Comment.objects.create(
+            news=news,
+            name=name,
+            email=email,
+            comment=comment,
+        )
+        messages.success(request, 'Comment is submitted successfully')
     category=Category.objects.get(id=news.category.id)
     sim_news=News.objects.filter(category=category).exclude(id=id)
+    comments=Comment.objects.filter(news=news,status=True).order_by('-id')
     return render(request,'detail.html',{
         'news':news,
-        'similar_news':sim_news
+        'similar_news':sim_news,
+        'comments':comments,
     })
     
     
