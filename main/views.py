@@ -18,3 +18,9 @@ def all_news(request):
         'all_news':all_news
     })    
 # Create your views here.
+
+def detail(request,id):
+    news=News.objects.get(pk=id)
+    return render(request,'detail.html',{
+        'news':news
+    })
